@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import uuid from 'uuid';
 import assign from 'object-assign';
 
-import AppDispatcher from '../dispatcher/AppDispatcher';
+import AppDispatcher from '../AppDispatcher';
 import TodoConstants from '../constants/TodoConstants';
 
 const CHANGE_EVENT = 'change';
@@ -31,9 +31,13 @@ const TodoStore = assign({}, EventEmitter.prototype, {
     }
 });
 
-AppDispatcher.register(({ value, actionType }) => {
+AppDispatcher.register(({ action: { value, actionType } }) => {
     switch(actionType) {
         case TodoConstants.NEW_ITEM:
+            create(value);
+            TodoStore.emitChange();
+            break;
+        case TodoConstants.ADD_ASYNC_ITEM:
             create(value);
             TodoStore.emitChange();
             break;

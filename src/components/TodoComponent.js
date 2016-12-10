@@ -10,22 +10,29 @@ class TodoComponent extends Component {
     }
 
     componentDidMount() {
-        TodoStore.addChangeListener(this.renderItems);
+        TodoStore.addChangeListener(() => this.change());
     }
 
     componentWillUnmount() {
-        TodoStore.removeChangeListener(this.renderItems);
+        TodoStore.removeChangeListener(() => this.change());
+    }
+
+    change() {
+        this.setState({ value: '' });
     }
 
     handleChange({ target: { value } }) {
         this.setState({ value });
     }
 
-    handleSubmit(e) {
+    handleClick(e) {
         e.nativeEvent.preventDefault();
-
         TodoActions.addItem(this.state.value);
-        this.setState({ value: '' });
+    }
+
+    handleAsyncClick(e) {
+        e.nativeEvent.preventDefault();
+        TodoActions.addGeoLocationItem(this.state.value);
     }
 
     renderItems() {
@@ -38,9 +45,10 @@ class TodoComponent extends Component {
         const items = this.renderItems();
         return (
             <div>
-                <form onSubmit={ (e) => this.handleSubmit(e) }>
+                <form>
                     <input value={ this.state.value } onChange={ (e) => this.handleChange(e) } />
-                    <button>add todo</button>
+                    <button onClick={ (e) => this.handleClick(e) }>add todo</button>
+                    <button onClick={ (e) => this.handleAsyncClick(e) }>add sync todo</button>
                 </form>
                 <ul> { items } </ul>
             </div>

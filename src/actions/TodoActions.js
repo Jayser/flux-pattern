@@ -1,11 +1,15 @@
-import AppDispatcher from "../dispatcher/AppDispatcher";
-import TodoConstants from "../constants/TodoConstants";
+import appDispatcher from "../AppDispatcher";
+import todoConstants from "../constants/TodoConstants";
+import googleGeoLocation from "../utils/GoogleGeoLocation";
 
 export default {
     addItem(value) {
-        AppDispatcher.dispatch({
-            actionType: TodoConstants.NEW_ITEM,
+        appDispatcher.handleViewAction({
+            actionType: todoConstants.NEW_ITEM,
             value
         });
     },
+    addGeoLocationItem: city => {
+        googleGeoLocation.get(city);
+    }
 };

@@ -5,10 +5,10 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   context: __dirname + '/src',
-  entry: './index',
+  entry: './AppBootstrap',
   output: {
     path: __dirname + '/dist',
-    filename: 'main.js'
+    filename: 'AppBootstrap.js'
   },
   module: {
     loaders: [
