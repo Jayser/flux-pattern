@@ -4,10 +4,12 @@ import googleGeoLocation from "../utils/GoogleGeoLocation";
 
 export default {
     addItem(value) {
-        appDispatcher.handleViewAction({
-            actionType: todoConstants.NEW_ITEM,
-            value
-        });
+        if (value) {
+            appDispatcher.handleViewAction({
+                actionType: todoConstants.NEW_ITEM,
+                value
+            });
+        }
     },
     addGeoLocationItem: city => {
         googleGeoLocation.get(city);
