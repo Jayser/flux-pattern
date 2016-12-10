@@ -33,7 +33,7 @@ const TodoStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(({ value, actionType }) => {
     switch(actionType) {
-        case TodoConstants.TODO_CREATE:
+        case TodoConstants.NEW_ITEM:
             create(value);
             TodoStore.emitChange();
             break;
