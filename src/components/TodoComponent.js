@@ -24,7 +24,7 @@ class TodoComponent extends Component {
     handleSubmit(e) {
         e.nativeEvent.preventDefault();
 
-        TodoActions.create(this.state.value);
+        TodoActions.addItem(this.state.value);
         this.setState({ value: '' });
     }
 
