@@ -9,7 +9,7 @@ const CHANGE_EVENT = 'change';
 
 const _todos = [];
 
-function create(value) {
+function addTodo(value) {
     _todos.push({
         id: uuid(),
         value: value
@@ -20,25 +20,25 @@ const TodoStore = assign({}, EventEmitter.prototype, {
     getAll: function() {
         return _todos;
     },
-    addChangeListener: function(callback) {
+    addChangeListener(callback) {
         this.on(CHANGE_EVENT, callback);
     },
-    removeChangeListener: function(callback) {
+    removeChangeListener(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     },
-    emitChange: function() {
+    emitChange() {
         this.emit(CHANGE_EVENT);
     }
 });
 
 AppDispatcher.register(({ action: { value, actionType } }) => {
     switch(actionType) {
-        case TodoConstants.NEW_ITEM:
-            create(value);
+        case TodoConstants.ADD_TODO:
+            addTodo(value);
             TodoStore.emitChange();
             break;
-        case TodoConstants.ADD_ASYNC_ITEM:
-            create(value);
+        case TodoConstants.ADD_ASYNC_TODO:
+            addTodo(value);
             TodoStore.emitChange();
             break;
     }

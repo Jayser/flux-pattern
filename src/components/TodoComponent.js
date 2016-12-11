@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import autobind from 'autobind-decorator';
 
 import TodoStore from '../stores/TodoStore';
 import TodoActions from '../actions/TodoActions';
@@ -10,47 +11,54 @@ class TodoComponent extends Component {
     }
 
     componentDidMount() {
-        TodoStore.addChangeListener(() => this.change());
+        TodoStore.addChangeListener(this.handleClear);
     }
 
     componentWillUnmount() {
-        TodoStore.removeChangeListener(() => this.change());
+        TodoStore.removeChangeListener(this.handleClear);
     }
 
-    change() {
+    @autobind handleClear() {
         this.setState({ value: '' });
     }
 
-    handleChange({ target: { value } }) {
+    @autobind handleChange({ target: { value } }) {
         this.setState({ value });
     }
 
-    handleClick(e) {
-        e.nativeEvent.preventDefault();
-        TodoActions.addItem(this.state.value);
+    @autobind handleClick(e) {
+        e.preventDefault();
+
+        const { state: { value } } = this;
+
+        value && TodoActions.addTodo(value);
     }
 
-    handleAsyncClick(e) {
-        e.nativeEvent.preventDefault();
-        TodoActions.addGeoLocationItem(this.state.value);
+    @autobind handleAsyncClick(e) {
+        e.preventDefault();
+
+        const { state: { value } } = this;
+
+        value && TodoActions.addAsyncTodo(value);
     }
 
-    renderItems() {
+    renderTodo() {
         return TodoStore.getAll().map(({ value, id}) => (
-            <li key={ id } id={ id }>{ value }</li>
+            <li key={ id } data-id={ id }>{ value }</li>
         ));
     }
 
     render() {
-        const items = this.renderItems();
+        const todo = this.renderTodo();
+
         return (
             <div>
                 <form>
-                    <input value={ this.state.value } onChange={ (e) => this.handleChange(e) } />
-                    <button onClick={ (e) => this.handleClick(e) }>add todo</button>
-                    <button onClick={ (e) => this.handleAsyncClick(e) }>add sync todo</button>
+                    <input value={ this.state.value } onChange={ this.handleChange } />
+                    <button onClick={ this.handleClick }>add todo</button>
+                    <button onClick={ this.handleAsyncClick }>add sync todo</button>
                 </form>
-                <ul> { items } </ul>
+                <ul> { todo } </ul>
             </div>
         );
     }
