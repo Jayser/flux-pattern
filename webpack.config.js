@@ -17,7 +17,8 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel',
         query: {
-          presets: ['es2015', 'stage-1', 'react']
+          presets: ['es2015', 'stage-1', 'react'],
+          plugins: ['transform-decorators-legacy']
         }
       },
       {
@@ -37,6 +38,7 @@ module.exports = {
       }
     ])
   ],
+  devtool: 'eval-source-map',
   devServer: {
     port: 3000
   }
